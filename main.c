@@ -61,6 +61,28 @@ int main (void)
     }
     while ((time > tmax) || (time < tmin));
     printf (" Leibniz: time per call = %10.2f usec\n", time1 * 1.e6);
+    
+    do
+    {
+        timer_start ();
+
+        for (i = 0; i < count; i++)
+        {
+            pi_bbp (ibbp);
+        }
+
+        time = timer_stop ();
+        time1 = time / count;
+        printf (" %10.2f usec %10.6f sec %10d\n", time1 * 1.e6, time, count);
+        /*
+         * adjust count such that cpu time is between
+         * tmin and tmax
+         */
+        count = adjust_rep_count (count, time, tmin, tmax);
+    }
+
+    while ((time > tmax) || (time < tmin));
+    printf (" Bbp: time per call = %10.2f usec\n", time1 * 1.e6);
 
     return 0;
 }
